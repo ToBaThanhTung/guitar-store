@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - db-network
+  db:
+    image: mongo
+    container_name: guitar-store-mongo
+    volumes:
+      - .docker/data/db:/data/db
+    restart: unless-stopped
+    ports:
+      - 0.0.0.0:27017:27017
+    networks:
+      - db-network
+
+networks:
+  db-network:
+    driver: bridge
+  redis-network:
+    driver: bridge
+
+volumes:
+  mongodbdata:
