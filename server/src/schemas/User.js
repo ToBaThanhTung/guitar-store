@@ -15,9 +15,9 @@ const UserSchema = gql`
     password: String!
     resetToken: String
     resetTokenExpiry: String
-    gitlabToken: String
     coverImage: File
     coverImagePublicId: String
+    role: String
     createdAt: String
     updatedAt: String
   }
@@ -72,8 +72,6 @@ const UserSchema = gql`
     fullName: String
     email: String
     username: String
-    isAuthGitlab: Boolean
-    gitlabRefreshToken: String
     coverImage: String
     coverImagePublicId: String
     createdAt: String
@@ -89,11 +87,7 @@ const UserSchema = gql`
     count: String!
   }
 
-  type RequestGitlabTokenPayload {
-    access_token: String
-    created_at: Int
-    refresh_token: String
-  }
+
 
   # ---------------------------------------------------------
   # Queries
@@ -127,9 +121,6 @@ const UserSchema = gql`
 
     # Resets user password
     resetPassword(input: ResetPasswordInput!): Token
-
-    # Request gitlab token
-    requestGitlabToken(input: requestGitlabTokenInput!): RequestGitlabTokenPayload
 
     # Uploads user Profile or Cover photo
     uploadUserPhoto(input: UploadUserPhotoInput!): UserPayload
