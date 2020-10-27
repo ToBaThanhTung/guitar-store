@@ -3,10 +3,17 @@ version: '3'
 services:
   app:
     build: .
+    container_name: guitar-store-app
     volumes:
       - ./:/app
     ports:
       - '${APP_PORT}:${APP_PORT}'
+    environment:
+      - DB_HOST=${DB_HOST}
+      - APP_PORT=${APP_PORT}
+      # - DB_USER=${DB_USER}
+      # - DB_PASS=${DB_PASS}
+      # - REDIS_URL=${REDIS_URL}
     restart: unless-stopped
     depends_on:
       - db
@@ -25,8 +32,6 @@ services:
 
 networks:
   db-network:
-    driver: bridge
-  redis-network:
     driver: bridge
 
 volumes:

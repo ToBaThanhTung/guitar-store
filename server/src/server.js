@@ -3,19 +3,20 @@ import mongoose from 'mongoose';
 import { createServer } from 'http';
 import { createApolloServer } from './utils/apollo-server';
 import models from './models';
-import schema from './schemas';
+import schema from './schemas/schema';
 import resolvers from './resolvers';
 import { DB } from './config';
 
 const connectWithRetry = function () {
+  console.log("XX11: ",DB)
   // when using with docker, at the time we up containers. Mongodb take few seconds to starting, during that time NodeJS server will try to connect MongoDB until success.
   return mongoose.connect(
     DB.url,
     {
       useNewUrlParser: true,
       useFindAndModify: false,
-      user: DB.user,
-      pass: DB.pwd,
+      // user: DB.user,
+      // pass: DB.pwd,
     },
     err => {
       if (err) {
@@ -30,8 +31,8 @@ const connectWithRetry = function () {
 };
 connectWithRetry();
 
-// app.use('/', (req, res) => res.send('OK'));
 const app = express();
+// app.use('/', (req, res) => res.send('OK'));
 
 const server = createApolloServer(schema, resolvers, models);
 server.applyMiddleware({ app, path: '/graphql' });
